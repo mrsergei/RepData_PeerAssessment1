@@ -31,9 +31,10 @@ str(activity)
 ##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
 ```
 
-We will create a transformed version of the original data capturing the key statistics like total number of steps taken per day, mean  and median of number of steps over 5 minute intervals per day.
+We will create a transformed version of the original data capturing the key statistics such as total number of steps taken per day, mean  and median of the number of steps over 5 minute intervals per day.
 
 ```r
+activity$date    <- as.Date(activity$date)
 activity_summary <- activity %>%
                     group_by(date) %>% 
                     summarise("total"  = sum(steps), 
@@ -54,12 +55,11 @@ head(activity_summary)
 ## 5 2012-10-05 13294 46.15972      0   0
 ## 6 2012-10-06 15420 53.54167      0   0
 ```
-Examining results revels that there 8 days in the original data set that are completely missing values for number os steps, in other words contain NA(s). 
 
 
 ## What is mean total number of steps taken per day?
 
-We examine the data by looking a the histogram of the total number of steps taken each day, where red green vertical line depicts the average (mean) number of steps taken per day. We also look at the total number of step taken per day for the duration of the series from the original data set. Green line here also depicts the average(mean) number of steps taken per day.
+We examine the data by looking a the histogram of the total number of steps taken each day, where green vertical line shows the average (mean) number of steps taken per day. We also show the total number of steps taken each day for the duration of the series. Horizontal green line here  depicts the average(mean) number of steps taken per day also.
 
 
 ```r
@@ -67,32 +67,32 @@ mean_txt   <- paste0("mean = ", round(mean(activity_summary$total, na.rm=TRUE), 
 median_txt <- paste0("median = ", round(median(activity_summary$total, na.rm=TRUE), 2))
 
 g1 <- ggplot(data=activity_summary, aes(x=total)) +
-    geom_histogram(aes(fill = ..count..)) +
-    scale_fill_gradient("Count", low = "yellow", high = "red") +
-    geom_vline(xintercept=mean(activity_summary$total, na.rm=TRUE), col="green", size=2) +
-    annotate("text", x = 17000, y = 7.5, label = mean_txt) +
-    annotate("text", x = 17000, y = 7, label = median_txt) +
-    guides(fill=FALSE) +
-    ggtitle("Number of steps per day") +
-    xlab("Total Number of steps taken per day") +
-    ylab("Number of days with the same count") +
-    theme_bw()
+      geom_histogram(aes(fill = ..count..)) +
+      scale_fill_gradient("Count", low = "yellow", high = "red") +
+      geom_vline(xintercept=mean(activity_summary$total, na.rm=TRUE), col="green", size=2) +
+      annotate("text", x = 17000, y = 7.5, label = mean_txt) +
+      annotate("text", x = 17000, y = 7, label = median_txt) +
+      guides(fill=FALSE) +
+      ggtitle("Number of steps per day") +
+      xlab("Total Number of steps taken per day") +
+      ylab("Number of days with the same count") +
+      theme_bw()
 
-g2 <- ggplot(data=activity_summary, aes(x=as.Date(date), y=total, fill=total)) +
-    geom_histogram(stat="identity") +
-    geom_hline(yintercept=mean(activity_summary$total, na.rm=TRUE), col="green", size=2) +
-    guides(fill=FALSE) +
-    ggtitle("Total number steps taken per day") +
-    xlab("Date") +
-    ylab("Total number of teps") +
-    theme_bw()
+g2 <- ggplot(data=activity_summary, aes(x=date, y=total, fill=total)) +
+      geom_histogram(stat="identity") +
+      geom_hline(yintercept=mean(activity_summary$total, na.rm=TRUE), col="green", size=2) +
+      guides(fill=FALSE) +
+      ggtitle("Total number steps taken per day") +
+      xlab("Date") +
+      ylab("Total number of teps") +
+      theme_bw()
 
 grid.arrange(g1, g2, ncol=2)
 ```
 
 ![](PA1_template_files/figure-html/Histogram of Steps per Day-1.png) 
 
-The mean and median of the total number of steps taken per day   
+The mean and the median of the total number of steps taken per day   
 
 ```r
 mean(activity_summary$total, na.rm=TRUE)
@@ -113,15 +113,15 @@ median(activity_summary$total, na.rm=TRUE)
 
 ## What is the average daily activity pattern?
 
-We will create daily activity pattern dataset by averaging steps taken for a given 5 minute interval across all days in the data set ignoring teh days that have no recorded values of the steps.
+We will create daily activity pattern dataset by averaging steps taken for a given 5 minute interval across all days in the data set ignoring the days that have no recorded values of the steps.
 
 ```r
 activity_daily <- activity %>%
-                 group_by(interval) %>%
-                 summarise("steps_ave" = mean(steps, na.rm=T))
+                  group_by(interval) %>%
+                  summarise("steps_ave" = mean(steps, na.rm=T))
 ```
 
-Blow we construct the time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis). X axes was labeled according to the time in the day for easier interpretability.
+Below we construct the time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis). X axes was labeled using the time in the day (rather than numeric vlaue of the interval) for easier interpretability.
 
 
 ```r
@@ -137,7 +137,6 @@ g <- ggplot(data=activity_daily, aes(interval, steps_ave)) +
      ylab("Average number of steps") +
      scale_x_continuous(breaks= c(0, 600, 1200, 1800, 2355), labels=c(0, 6, 12, 18, 24)) +
      theme_bw()
-    
 print(g)
 ```
 
@@ -153,7 +152,7 @@ activity_daily$interval[which.max(activity_daily$steps_ave)]
 ```
 ## [1] 835
 ```
-Which correspnds to 8:35 in the morning.
+NOTE: This correspnds to `8:35` in the morning.
 
 ## Imputing missing values
 
@@ -213,25 +212,25 @@ imp_mean_txt <- paste0("mean = ", round(mean(act_imp_sum$total), 2))
 imp_median_txt <- paste0("median = ", round(median(act_imp_sum$total), 2))
 
 g1 <- ggplot(data=act_imp_sum, aes(x=total)) +
-    geom_histogram(aes(fill = ..count..)) +
-    scale_fill_gradient("Count", low = "yellow", high = "red") +
-    geom_vline(xintercept=mean(act_imp_sum$total, na.rm=TRUE), col="purple", size=2) +
-    annotate("text", x = 17000, y = 7.5, label = imp_mean_txt) +
-    annotate("text", x = 17000, y = 7, label = imp_median_txt) +
-    guides(fill=FALSE) +
-    ggtitle("Number of steps per day") +
-    xlab("Total Number of steps taken per day") +
-    ylab("Number of days with the same count") +
-    theme_bw()
+      geom_histogram(aes(fill = ..count..)) +
+      scale_fill_gradient("Count", low = "yellow", high = "red") +
+      geom_vline(xintercept=mean(act_imp_sum$total, na.rm=TRUE), col="purple", size=2) +
+      annotate("text", x = 17000, y = 7.5, label = imp_mean_txt) +
+      annotate("text", x = 17000, y = 7, label = imp_median_txt) +
+      guides(fill=FALSE) +
+      ggtitle("Number of steps per day") +
+      xlab("Total Number of steps taken per day") +
+      ylab("Number of days with the same count") +
+      theme_bw()
 
-g2 <- ggplot(data=act_imp_sum, aes(x=as.Date(date), y=total, fill=total)) +
-    geom_histogram(stat="identity") +
-    geom_hline(yintercept=mean(act_imp_sum$total, na.rm=TRUE), col="purple", size=2) +
-    guides(fill=FALSE) +
-    ggtitle("Total number steps taken per day") +
-    xlab("Date") +
-    ylab("Total number of teps") +
-    theme_bw()
+g2 <- ggplot(data=act_imp_sum, aes(x=date, y=total, fill=total)) +
+      geom_histogram(stat="identity") +
+      geom_hline(yintercept=mean(act_imp_sum$total, na.rm=TRUE), col="purple", size=2) +
+      guides(fill=FALSE) +
+      ggtitle("Total number steps taken per day") +
+      xlab("Date") +
+      ylab("Total number of teps") +
+      theme_bw()
 
 grid.arrange(g1, g2, ncol=2)
 ```
@@ -296,7 +295,6 @@ g <- ggplot(act_wkd, aes(interval, steps_ave)) +
      ylab("Average number of steps") +
      scale_x_continuous(breaks= c(0, 600, 1200, 1800, 2355), labels=c(0, 6, 12, 18, 24)) +
      theme_bw()
-
 print(g)
 ```
 
