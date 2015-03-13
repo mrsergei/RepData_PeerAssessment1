@@ -165,7 +165,7 @@ print(g)</code></pre>
 ## 6 2012-11-10    NA   NA     NA 288
 ## 7 2012-11-14    NA   NA     NA 288
 ## 8 2012-11-30    NA   NA     NA 288</code></pre>
-<p>For days that are missing measurement of the number of steps we will use the previous day values as the imputed value except for the day one where day 2 values will be used:</p>
+<p>For days that are missing measurement of the number of steps we will use the previous day values as the imputed value except for the day one where day two value will be used:</p>
 <pre class="r"><code>act_imputed      &lt;- activity
 act_imputed$date &lt;- as.factor(act_imputed$date)
 act_list         &lt;- split(act_imputed, act_imputed$date)
@@ -240,7 +240,7 @@ str(act_wkd)</code></pre>
 ##  - attr(*, &quot;vars&quot;)=List of 1
 ##   ..$ : symbol daytype
 ##  - attr(*, &quot;drop&quot;)= logi TRUE</code></pre>
-<p>Here you can see noticeable difference in the average weekday patters vs weekend pattern. Weekend activity pattern has notable higher activity in the afternoon. While majority of activity in weekday pattern is around morning time only (before typical work hours) and some in the evening (after typical work hours)</p>
+<p>Here you can see noticeable difference in the average daily activity patterns for weekday vs weekend. Weekend activity pattern has notable higher activity in the afternoon. While majority of the activity in weekday pattern is around morning time only (before typical work hours) and some in the evening (after typical work hours).</p>
 <pre class="r"><code>g &lt;- ggplot(act_wkd, aes(interval, steps_ave)) + 
      geom_line(colour = &quot;blue&quot;, size = 2, alpha = 0.8) +
      facet_grid(daytype ~ .) +

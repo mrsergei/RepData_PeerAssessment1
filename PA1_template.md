@@ -177,7 +177,7 @@ activity_summary[activity_summary$nas > 0,]
 ## 8 2012-11-30    NA   NA     NA 288
 ```
 
-For days that are missing measurement of the number of steps we will use the previous day values as the imputed value except for the day one where day 2 values will be used:
+For days that are missing measurement of the number of steps we will use the previous day values as the imputed value except for the day one where day two value will be used:
 
 
 ```r
@@ -283,7 +283,7 @@ str(act_wkd)
 ##  - attr(*, "drop")= logi TRUE
 ```
 
-Here you can see noticeable difference in the average weekday patters vs weekend pattern. Weekend activity pattern has notable higher activity in the afternoon. While majority of activity in weekday pattern is around morning time only (before typical work hours) and some in the evening (after typical work hours)
+Here you can see noticeable difference in the average daily activity patterns for weekday vs weekend. Weekend activity pattern has notable higher activity in the afternoon. While majority of the activity in weekday pattern is around morning time only (before typical work hours) and some in the evening (after typical work hours).
 
 
 ```r
