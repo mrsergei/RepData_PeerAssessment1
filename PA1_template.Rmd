@@ -43,7 +43,7 @@ head(activity_summary)
 
 We examine the data by looking a the histogram of the total number of steps taken each day, where green vertical line shows the average (mean) number of steps taken per day. We also show the total number of steps taken each day for the duration of the series. Horizontal green line here  depicts the average(mean) number of steps taken per day also.
 
-```{r Histogram of Steps per Day, fig.width=10}
+```{r histogram of steps per day, fig.width=10}
 mean_txt   <- paste0("mean = ", round(mean(activity_summary$total, na.rm=TRUE), 2))
 median_txt <- paste0("median = ", round(median(activity_summary$total, na.rm=TRUE), 2))
 
@@ -89,7 +89,7 @@ activity_daily <- activity %>%
 
 Below we construct the time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis). X axes was labeled using the time in the day (rather than numeric vlaue of the interval) for easier interpretability.
 
-```{r average daily activity plot, fig.align='center'}
+```{r average daily activity pattern, fig.align='center'}
 max_interval <- activity_daily$interval[which.max(activity_daily$steps_ave)]
 max_label    <- paste0("max step interval = ", max_interval)
 
@@ -148,7 +148,7 @@ act_imp_sum <- act_imputed %>%
 
 Let's look at the histogram of the daily total number of steps and the total number of step taken per day for the duration of the series for the new dataset with imputed values. Purple line hre represents average(mean) number of steps taken per day. 
 
-```{r daily average activity for imputed data set, fig.width=10}
+```{r daily average activity for imputed dataset, fig.width=10}
 imp_mean_txt <- paste0("mean = ", round(mean(act_imp_sum$total), 2))
 imp_median_txt <- paste0("median = ", round(median(act_imp_sum$total), 2))
 
@@ -201,7 +201,7 @@ str(act_wkd)
 
 Here you can see noticeable difference in the average daily activity patterns for weekday vs weekend. Weekend activity pattern has notable higher activity in the afternoon. While majority of the activity in weekday pattern is around morning time only (before typical work hours) and some in the evening (after typical work hours).
 
-```{r Weekend and weekday average activity, fig.align='center'}
+```{r weekend and weekday average activity, fig.align='center'}
 g <- ggplot(act_wkd, aes(interval, steps_ave)) + 
      geom_line(colour = "blue", size = 2, alpha = 0.8) +
      facet_grid(daytype ~ .) +

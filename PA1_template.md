@@ -90,7 +90,7 @@ g2 <- ggplot(data=activity_summary, aes(x=date, y=total, fill=total)) +
 grid.arrange(g1, g2, ncol=2)
 ```
 
-![](PA1_template_files/figure-html/Histogram of Steps per Day-1.png) 
+![](PA1_template_files/figure-html/histogram of steps per day-1.png) 
 
 The mean and the median of the total number of steps taken per day   
 
@@ -140,7 +140,7 @@ g <- ggplot(data=activity_daily, aes(interval, steps_ave)) +
 print(g)
 ```
 
-<img src="PA1_template_files/figure-html/average daily activity plot-1.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="PA1_template_files/figure-html/average daily activity pattern-1.png" title="" alt="" style="display: block; margin: auto;" />
 
 The following 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps:
 
@@ -235,7 +235,7 @@ g2 <- ggplot(data=act_imp_sum, aes(x=date, y=total, fill=total)) +
 grid.arrange(g1, g2, ncol=2)
 ```
 
-![](PA1_template_files/figure-html/daily average activity for imputed data set-1.png) 
+![](PA1_template_files/figure-html/daily average activity for imputed dataset-1.png) 
 
 Calculate and report the mean and median total number of steps taken per day  for the data set with imputed values.
 
@@ -298,4 +298,4 @@ g <- ggplot(act_wkd, aes(interval, steps_ave)) +
 print(g)
 ```
 
-<img src="PA1_template_files/figure-html/Weekend and weekday average activity-1.png" title="" alt="" style="display: block; margin: auto;" />
+<img src="PA1_template_files/figure-html/weekend and weekday average activity-1.png" title="" alt="" style="display: block; margin: auto;" />
